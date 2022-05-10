@@ -38,6 +38,10 @@ namespace ChatService.Broker
                 var json = JsonConvert.DeserializeObject(message);
                 Console.WriteLine(message);
                 Console.WriteLine(json);
+
+                var producer = _serviceProvider.GetService<IMessageProducer>();
+
+                producer.SendMessage(json);
             };
 
             _channel.BasicConsume(queue: "chat", autoAck: true, consumer: consumer);

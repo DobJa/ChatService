@@ -32,7 +32,7 @@ namespace ChatService.Broker
             var json = JsonConvert.SerializeObject(message);
             var body = Encoding.UTF8.GetBytes(json);
 
-            _channel.BasicPublish(exchange: "", routingKey: "chat", body: body);
+            _channel.BasicPublish(exchange: "", routingKey: "chat2", body: body);
         }
     }
 }
