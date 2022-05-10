@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<RabbitMQConsumer>();
+builder.Services.AddSingleton<IMessageConsumer, RabbitMQConsumer>();
 builder.Services.AddSingleton<IMessageProducer, RabbitMQProducer>();
 
 var app = builder.Build();
