@@ -1,9 +1,5 @@
-using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
-using System;
-using System.Text;
+using ChatService;
 using ChatService.Broker;
-using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,16 +18,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+// app.UseHttpsRedirection();
 
-
-
-
-
+app.EnableBrokerListener();
 
 app.Run();
 
-public class Message{
+public class Message {
     public int UserId {get; set;}
     public int MessId {get; set;}
     public string Text {get; set;}

@@ -5,7 +5,7 @@ using RabbitMQ.Client.Events;
 
 namespace ChatService.Broker
 {
-    public class RabbitMQConsumer
+    public class RabbitMQConsumer : IMessageConsumer
     {
         protected readonly ConnectionFactory _factory;
         protected readonly IConnection _connection;
@@ -24,7 +24,7 @@ namespace ChatService.Broker
             _serviceProvider = serviceProvider;
         }
 
-        public void ReceiveMessage<T>(T message)
+        public void ReceiveMessage()
         {
             System.Console.WriteLine("\nConnected to poop factory as the eater!\n");
 
