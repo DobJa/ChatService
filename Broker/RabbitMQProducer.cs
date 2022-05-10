@@ -18,14 +18,14 @@ namespace ChatService.Broker
             _connection = _factory.CreateConnection();
             _channel = _connection.CreateModel();
 
-            System.Console.WriteLine("\nConnected to poop factory!\n");
+            System.Console.WriteLine("\nConnected to the poop factory (2)!\n");
 
             _serviceProvider = serviceProvider;
         }
 
         public void SendMessage<T>(T message)
         {
-            System.Console.WriteLine("\nConnected to poop factory!\n");
+            System.Console.WriteLine("\nConnected to the poop factory (2)!\n");
 
             _channel.QueueDeclare(queue: "chat2", durable: false, exclusive: false, autoDelete: false);
 
