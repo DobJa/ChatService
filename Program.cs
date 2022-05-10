@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddSingleton<RabbitMQConsumer>();
+builder.Services.AddSingleton<RabbitMQProducer>();
 
 var app = builder.Build();
 
