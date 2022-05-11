@@ -2,6 +2,7 @@ using System.Text;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using RabbitMQ.Client.Exceptions;
 
 namespace ChatService.Broker
 {
@@ -16,6 +17,18 @@ namespace ChatService.Broker
         public RabbitMQConsumer(IServiceProvider serviceProvider)
         {
             _factory = new ConnectionFactory() { HostName = "rabbitmq" };
+            const int retries = 3;
+            for (int i = 1; i <= retries; i++)
+            {
+                try
+                {
+                    _connection = _factory.CreateConnection();
+                    break;
+                } catch (BrokerUnreachableException)
+                {
+                    Console.WriteLine($"[{i}/{retries}] Could not connect to RabbitMQ. Retrying...");
+                }
+            }
             _connection = _factory.CreateConnection();
             _channel = _connection.CreateModel();
 
