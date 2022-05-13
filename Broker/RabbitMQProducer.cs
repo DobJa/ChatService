@@ -2,6 +2,8 @@ using System.Text;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 
+using ChatService.Model;
+
 namespace ChatService.Broker
 {
     public class RabbitMQProducer : IMessageProducer
@@ -23,16 +25,23 @@ namespace ChatService.Broker
             _serviceProvider = serviceProvider;
         }
 
-        public void SendMessage<T>(T message)
+        public void SendMessage<T>(T user, T content)
         {
             System.Console.WriteLine("\nConnected to the poop factory (2)!\n");
 
             _channel.QueueDeclare(queue: "chat2", durable: false, exclusive: false, autoDelete: false);
 
+            Message message = new Message()
+            {
+                User = user.ToString(),
+                Content = content.ToString()
+            };
+
             var json = JsonConvert.SerializeObject(message);
             var body = Encoding.UTF8.GetBytes(json);
 
             _channel.BasicPublish(exchange: "", routingKey: "chat2", body: body);
+            System.Console.WriteLine($"Sent message: {message} to broker\n");
         }
     }
 }

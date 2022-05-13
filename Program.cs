@@ -24,9 +24,3 @@ if (app.Environment.IsDevelopment())
 app.EnableBrokerListener();
 
 app.Run();
-
-public class Message {
-    public int UserId {get; set;}
-    public int MessId {get; set;}
-    public string Text {get; set;}
-}

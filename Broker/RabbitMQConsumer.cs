@@ -4,6 +4,8 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using RabbitMQ.Client.Exceptions;
 
+using ChatService.Model;
+
 namespace ChatService.Broker
 {
     public class RabbitMQConsumer : IMessageConsumer
@@ -45,16 +47,16 @@ namespace ChatService.Broker
 
             var consumer = new EventingBasicConsumer(_channel);
 
-                        consumer.Received += (sender, e) => {
+            consumer.Received += (sender, e) => {
                 var body = e.Body.ToArray();
-                var message = Encoding.UTF8.GetString(body);
-                var json = JsonConvert.DeserializeObject(message);
+                var json = Encoding.UTF8.GetString(body);
+                var message = JsonConvert.DeserializeObject<Message>(json);
                 Console.WriteLine(message);
                 Console.WriteLine(json);
 
                 var producer = _serviceProvider.GetService<IMessageProducer>();
 
-                producer.SendMessage(json);
+                producer.SendMessage(message.User, message.Content);
             };
 
             _channel.BasicConsume(queue: "chat", autoAck: true, consumer: consumer);
