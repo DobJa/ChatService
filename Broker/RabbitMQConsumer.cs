@@ -56,7 +56,7 @@ namespace ChatService.Broker
 
                 var producer = _serviceProvider.GetService<IMessageProducer>();
 
-                producer.SendMessage(message.User, message.Content);
+                producer.SendMessage<Message>(message);
             };
 
             _channel.BasicConsume(queue: "chat", autoAck: true, consumer: consumer);

@@ -25,17 +25,11 @@ namespace ChatService.Broker
             _serviceProvider = serviceProvider;
         }
 
-        public void SendMessage<T>(T user, T content)
+        public void SendMessage<T>(Message message)
         {
             System.Console.WriteLine("\nConnected to the poop factory (2)!\n");
 
             _channel.QueueDeclare(queue: "chat2", durable: false, exclusive: false, autoDelete: false);
-
-            Message message = new Message()
-            {
-                User = user.ToString(),
-                Content = content.ToString()
-            };
 
             var json = JsonConvert.SerializeObject(message);
             var body = Encoding.UTF8.GetBytes(json);
