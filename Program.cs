@@ -1,5 +1,7 @@
-using ChatService;
-using ChatService.Broker;
+using System.Reflection;
+using ChatService.Consumers;
+using MassTransit;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,8 +9,24 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddSingleton<IMessageConsumer, RabbitMQConsumer>();
-builder.Services.AddSingleton<IMessageProducer, RabbitMQProducer>();
+
+builder.Services.AddMassTransit(x =>
+{
+    x.SetKebabCaseEndpointNameFormatter();
+
+    var entryAssembly = Assembly.GetEntryAssembly();
+
+    x.AddConsumers(entryAssembly);
+
+    x.UsingRabbitMq((context, cfg) =>
+    {
+        cfg.Host("rabbitmq", "/", h => { 
+            h.Username("guest");
+            h.Password("guest");
+        });
+        cfg.ConfigureEndpoints(context);
+    });
+});
 
 var app = builder.Build();
 
@@ -20,7 +38,5 @@ if (app.Environment.IsDevelopment())
 }
 
 // app.UseHttpsRedirection();
-
-app.EnableBrokerListener();
 
 app.Run();
