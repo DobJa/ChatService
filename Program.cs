@@ -1,5 +1,4 @@
 using System.Reflection;
-using ChatService.Consumers;
 using MassTransit;
 
 

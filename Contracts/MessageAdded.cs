@@ -1,4 +1,4 @@
-using ChatService.Model;
+using ChatService.Models;
 
 namespace Contracts
 {
