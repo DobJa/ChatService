@@ -1,4 +1,4 @@
-namespace ChatService.Model
+namespace ChatService.Models
 {
     public record Message
     {
