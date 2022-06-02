@@ -45,4 +45,6 @@ if (app.Environment.IsDevelopment())
 
 // app.UseHttpsRedirection();
 
+app.MapGet("/messages", async (MessagesService messagesService) => await messagesService.GetAsync());
+
 app.Run();
