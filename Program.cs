@@ -12,6 +12,19 @@ builder.Services.Configure<ChatDatabaseSettings>(
 
 builder.Services.AddSingleton<MessagesService>();
 
+// CORS policy
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(
+        policy =>
+        {
+            policy.WithOrigins("http://frontend.test")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
+        });
+});
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -44,6 +57,8 @@ if (app.Environment.IsDevelopment())
 }
 
 // app.UseHttpsRedirection();
+
+app.UseCors();
 
 app.MapGet("/messages", async (MessagesService messagesService) => await messagesService.GetAsync());
 
