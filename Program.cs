@@ -1,10 +1,17 @@
 using System.Reflection;
+using ChatService.Models;
+using ChatService.Services;
 using MassTransit;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.Configure<ChatDatabaseSettings>(
+    builder.Configuration.GetSection("ChatDatabase"));
+
+builder.Services.AddSingleton<MessagesService>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

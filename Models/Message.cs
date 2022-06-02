@@ -1,3 +1,6 @@
+using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
+
 namespace ChatService.Models
 {
     public record Message
@@ -6,6 +9,7 @@ namespace ChatService.Models
         public String User { get; init; }
         public String Text { get; init; }
         public string image { get; init; }
+        [BsonId]
         public string mid { get; init; }
         public UInt64 Timestamp { get; init; }
     }
