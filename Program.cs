@@ -6,6 +6,8 @@ using MassTransit;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Configuration.AddEnvironmentVariables(prefix: "HPDS_COMMON_");
+
 // Add services to the container.
 builder.Services.Configure<ChatDatabaseSettings>(
     builder.Configuration.GetSection("ChatDatabase"));
@@ -18,7 +20,7 @@ builder.Services.AddCors(options =>
     options.AddDefaultPolicy(
         policy =>
         {
-            policy.WithOrigins("http://frontend.test")
+            policy.WithOrigins(builder.Configuration["HPDS_COMMON_FRONTEND_URL"])
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials();
@@ -39,9 +41,9 @@ builder.Services.AddMassTransit(x =>
 
     x.UsingRabbitMq((context, cfg) =>
     {
-        cfg.Host("rabbitmq", "/", h => { 
-            h.Username("guest");
-            h.Password("guest");
+        cfg.Host(builder.Configuration["HPDS_COMMON_RABBITMQ_HOST"], builder.Configuration["HPDS_COMMON_RABBITMQ_VHOST"], h => { 
+            h.Username(builder.Configuration["HPDS_COMMON_RABBITMQ_USERNAME"]);
+            h.Password(builder.Configuration["HPDS_COMMON_RABBITMQ_PASSWORD"]);
         });
         cfg.ConfigureEndpoints(context);
     });
